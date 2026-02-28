@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velour Reviews</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --midnight: #0b1c2d;
+      --royal: #102a43;
+      --gold: #c6a75e;
+      --cream: #f5f2ea;
+      --card: #132f4c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--midnight), var(--royal));
+      color: var(--cream);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      font-size: 3rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    p.subtitle {
+      text-align: center;
+      margin-bottom: 40px;
+      opacity: 0.8;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    form {
+      background: var(--card);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      margin-bottom: 40px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #1f4668;
+      background: #0e2438;
+      color: var(--cream);
+      font-size: 1rem;
+    }
+
+    input[type="file"] {
+      padding: 8px;
+      background: transparent;
+      border: none;
+    }
+
+    button {
+      background: var(--gold);
+      color: var(--midnight);
+      border: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #e0c07a;
+      transform: translateY(-2px);
+    }
+
+    .reviews {
+      display: grid;
+      gap: 20px;
+    }
+
+    .review-card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .review-card h3 {
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .review-card p {
+      margin-bottom: 10px;
+    }
+
+    .review-card img, .review-card a {
+      display: block;
+      margin-top: 10px;
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Velour Reviews</h1>
+    <p class="subtitle">Where refined voices leave their mark</p>
+
+    <form id="reviewForm">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" required>
+
+      <label for="title">Review Title</label>
+      <input type="text" id="title" required>
+
+      <label for="message">Your Review</label>
+      <textarea id="message" rows="4" required></textarea>
+
+      <label for="file">Attach a File (image or document)</label>
+      <input type="file" id="file">
+
+      <button type="submit">Submit Review</button>
+    </form>
+
+    <div class="reviews" id="reviews"></div>
+
+    <footer>
+      Velour Reviews © 2026
+    </footer>
+  </div>
+
+  <script>
+    const form = document.getElementById('reviewForm');
+    const reviewsContainer = document.getElementById('reviews');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const title = document.getElementById('title').value;
+      const message = document.getElementById('message').value;
+      const fileInput = document.getElementById('file');
+
+      const reviewCard = document.createElement('div');
+      reviewCard.classList.add('review-card');
+
+      reviewCard.innerHTML = `
+        <h3>${title}</h3>
+        <p><strong>${name}</strong></p>
+        <p>${message}</p>
+      `;
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const fileURL = URL.createObjectURL(file);
+
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = fileURL;
+          reviewCard.appendChild(img);
+        } else {
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.textContent = 'View attached file';
+          link.target = '_blank';
+          reviewCard.appendChild(link);
+        }
+      }
+
+      reviewsContainer.prepend(reviewCard);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
